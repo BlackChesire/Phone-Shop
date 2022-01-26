@@ -10,7 +10,9 @@ TABLES = {
    manufacturer VARCHAR(30),
    model VARCHAR(30),
    price INTEGER,
-   quantity INTEGER
+   quantity INTEGER,
+   IMEI INTEGER,
+   warranty DATE
    );""",
    "sale_table": """
    CREATE TABLE sale (
@@ -18,6 +20,7 @@ TABLES = {
    model VARCHAR(30),
    price INTEGER,
    quantity INTEGER,
-   date_of_purchase DATE
+   date_of_purchase DATE,
+   discount DOUBLE 
    );"""
 }
