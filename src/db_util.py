@@ -38,7 +38,8 @@ def select_all_by_table(conn, table_name):
 
 
 def add_new_phone(conn, phone):
-    pass
+    cur = conn.cursor()
+    cur.execute(f"INSERT INTO {conf.PHONE_TABLE} (manufacturer,model,price,quantity,IMEI,warranty) VALUES (phone.manufacturer,phone.model,phone.price,phone.quantity,phone.IMEI,phone.warranty) ")
 
 
 def update_phone_quantity(conn, IMEI):
