@@ -4,33 +4,34 @@ import sys
 import src.db_util as db_utils
 import src.conf as conf
 from Phone import *
-import Sale
+from Sale import *
 
 cmd_dict = {
-    "0": "Add a new phone",
-    "1": "Update Phone quantity",
-    "2": "Add new sale",
-    "4": "Get report of all phones in stock",
-    "5": "Get report of total amount of sales between dates",
-    "6": "EXIT"
+    0: "Add a new phone",
+    1: "Update phone quantity",
+    2: "Add new sale",
+    3: "Get report of all phones in stock",
+    4: "Get report of total amount of sales between dates",
+    5: "EXIT"
 }
 
-def cli(connection):
 
+def cli(connection):
     print("------------> Welcome to the phone store CLI <------------")
     for i in cmd_dict:
         print(f'press {i} in order to {cmd_dict[i]}')
     selection = input("Enter selection: ")
-    while selection not in cmd_dict.keys():
+    while int(selection) not in list(cmd_dict.keys()):
         print("wrong selection please try again")
         cli(connection)
-    cmd_management(selection)
+    cmd_management(int(selection))
+    cli(connection)
 
 
 def cmd_management(selection):
     print(f"You chose: {cmd_dict[selection]}")
     match selection:
-        case 1:  # add new phone
+        case 0:  # add new phone
             # getting user input 1 by 1 in order to avoid wrong input
             manufacturer = input("please enter manufacturer: ")
             model = input("please enter model: ")
@@ -41,23 +42,33 @@ def cmd_management(selection):
             new_phone = Phone(manufacturer, model, price, quantity, imei, warranty)
             db_utils.add_new_phone(connection, new_phone)
             return
-        case 2:  # update phone quantity
-            imei = input("please enter the phone's IMEI")
+        case 1:  # update phone quantity
+            model = input("please enter the phone's model")
             new_quantity = input("enter new quantity")
-            db_utils.update_phone_quantity(connection,imei,new_quantity)
+            db_utils.update_phone_quantity(connection, model, new_quantity)
 
             return
-        case 3:  # add new sale
+        case 2:  # add new sale
+            manufacturer = input("Enter manufacturer: ")
+            sold_model = input("Enter sold phone model: ")
+            sale_date = input("Enter sale date model: ")
+            amount = input(f"Enter amount of {sold_model} sold :")
+            discount = input("Enter discount made for  (if none made enter 0):")
+            if discount == 0.0:
+                discount = 1
+            acutal_phone_price = db_utils.get_price_by_model(connection, str(sold_model))
+            sale = Sale(manufacturer, sold_model, sale_date, amount, acutal_phone_price * discount, discount)
             return
-        case 4:  # phone stock report
+        case 3:
+            # phone stock report
             db_utils.get_phone_stock_report(connection)
             return
-        case 5:  # total amount of sales between dates
+        case 4:  # total amount of sales between dates
             start_date = input("Enter start date:")
             end_date = input("Enter end date:")
             db_utils.sales_report_by_date(connection, start_date, end_date)
             return
-        case 6:  # EXIT
+        case 5:  # EXIT
             exit()
 
 
@@ -67,9 +78,6 @@ if __name__ == '__main__':
         connection = db_utils.create_db()
         db_utils.load_raw_data(connection)
         cli(connection)
-        # db_utils.select_all_by_table(connection, conf.PHONE_TABLE)
-        # db_utils.select_all_by_table(connection, conf.SALE_TABLE)
-        # db_utils.get_phone_stock_report(connection)
     except sqlite3.Error as e:
         print(f"Error {e.args[0]}")
         sys.exit(1)

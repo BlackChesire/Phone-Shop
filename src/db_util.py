@@ -44,16 +44,18 @@ def add_new_phone(conn, phone):
         f"INSERT INTO {conf.PHONE_TABLE} VALUES ('{phone.manufacturer}' ,'{phone.model}','{phone.price}' ,'{phone.quantity}','{phone.IMEI}' ,'{phone.warranty}') ")
 
 
-def update_phone_quantity(conn, IMEI, quantity):
+def update_phone_quantity(conn, model, quantity):
     cur = conn.cursor()
-    cur.execute(f"UPDATE {conf.PHONE_TABLE} SET quantity = {quantity} WHERE IMEI = {IMEI}")
+    cur.execute(f"UPDATE {conf.PHONE_TABLE} SET quantity = {quantity} WHERE model = {model}")
 
 
 def add_new_sale(conn, sale):
+    discount = None
     cur = conn.cursor()
+    if sale.discount_made == 1:
+        discount = 0
     cur.execute(
-        f"INSERT INTO {conf.SALE_TABLE} VALUES ('{sale.phone.model}' ,{sale.phone.price},{sale.phone.quantity} ,'{sale.phone.date}',{sale.discount}) ")
-    #  update sold phone quantity
+        f"INSERT INTO {conf.SALE_TABLE} VALUES ('{sale.phone.manufacturer}' ,'{sale.model}',{sale.total_sale} ,'{sale.amount_sold}','{sale.date}',{discount}) ")
 
 
 # Report handling
@@ -67,6 +69,15 @@ def get_phone_stock_report(conn):
 
 def sales_report_by_date(conn, start_date, end_date):
     cur = conn.cursor()
-    cur.execute(f"SELECT * FROM {conf.SALE_TABLE} WHERE '{end_date}' > date_of_purchase AND '{start_date}' > date_of_purchase")
+    cur.execute(
+        f"SELECT * FROM {conf.SALE_TABLE} WHERE '{end_date}' > date_of_purchase AND '{start_date}' > date_of_purchase")
     rows = cur.fetchall()
     print(f"Tottal sales between {start_date} and {end_date} is : {len(rows)}")
+
+
+def get_price_by_model(conn, phone_model):
+    cur = conn.cursor()
+    cur.execute(f"SELECT price FROM {conf.PHONE_TABLE} WHERE model = '{phone_model}'")
+    price = cur.fetchall()
+    price = (str(price[0]).strip("(").strip(")").strip(","))
+    return int(price)
