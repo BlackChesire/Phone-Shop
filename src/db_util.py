@@ -26,8 +26,8 @@ def load_raw_data(conn):
                     f"INSERT INTO {key} VALUES({records[key][item]})"
                 )
                 conn.commit()
-                
-                
+
+
 def select_all_by_table(conn, table_name):
     print(f"\nAll data in table:{table_name}")
     cur = conn.cursor()
@@ -36,3 +36,22 @@ def select_all_by_table(conn, table_name):
     for row in rows:
         print(row)
 
+
+def add_new_phone(conn, phone):
+    pass
+
+
+def update_phone_quantity(conn, IMEI):
+    pass
+
+
+def add_new_sale(conn, phone, date):
+    pass
+
+
+def get_phone_stock_report(conn, phone, date):
+    pass
+
+
+def sales_report_by_date(conn, start_date, end_date):
+    pass
