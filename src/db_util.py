@@ -38,12 +38,14 @@ def select_all_by_table(conn, table_name):
 
 
 def add_new_phone(conn, phone):
+    """ Adds new phone to the phones table"""
     cur = conn.cursor()
-    cur.execute(f"INSERT INTO {conf.PHONE_TABLE} (manufacturer,model,price,quantity,IMEI,warranty) VALUES (phone.manufacturer,phone.model,phone.price,phone.quantity,phone.IMEI,phone.warranty) ")
+    cur.execute(f"INSERT INTO {conf.PHONE_TABLE} VALUES ('{phone.manufacturer}' ,'{phone.model}','{phone.price}' ,'{phone.quantity}','{phone.IMEI}' ,'{phone.warranty}') ")
 
 
-def update_phone_quantity(conn, IMEI):
-    pass
+def update_phone_quantity(conn, IMEI,quantity):
+    cur = conn.cursor()
+    cur.execute(f"UPDATE {conf.PHONE_TABLE} SET quantity = {quantity} WHERE IMEI = {IMEI}")
 
 
 def add_new_sale(conn, phone, date):
