@@ -49,10 +49,10 @@ def update_phone_quantity(conn, IMEI, quantity):
     cur.execute(f"UPDATE {conf.PHONE_TABLE} SET quantity = {quantity} WHERE IMEI = {IMEI}")
 
 
-def add_new_sale(conn, phone, sale):
+def add_new_sale(conn, sale):
     cur = conn.cursor()
     cur.execute(
-        f"INSERT INTO {conf.SALE_TABLE} VALUES ('{phone.model}' ,'{phone.price}','{phone.quantity}' ,'{sale.date}','{sale.date}') ")
+        f"INSERT INTO {conf.SALE_TABLE} VALUES ('{sale.phone.model}' ,{sale.phone.price},{sale.phone.quantity} ,'{sale.phone.date}',{sale.discount}) ")
     #  update sold phone quantity
 
 
@@ -67,6 +67,6 @@ def get_phone_stock_report(conn):
 
 def sales_report_by_date(conn, start_date, end_date):
     cur = conn.cursor()
-    cur.execute(f"SELECT * FROM {conf.SALE_TABLE} WHERE {end_date} > date_of_purchase AND {start_date} > date_of_purchase")
+    cur.execute(f"SELECT * FROM {conf.SALE_TABLE} WHERE '{end_date}' > date_of_purchase AND '{start_date}' > date_of_purchase")
     rows = cur.fetchall()
     print(f"Tottal sales between {start_date} and {end_date} is : {len(rows)}")
