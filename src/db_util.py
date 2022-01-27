@@ -42,12 +42,12 @@ def add_new_phone(conn, phone):
     cur = conn.cursor()
     cur.execute(
         f"INSERT INTO {conf.PHONE_TABLE} VALUES ('{phone.manufacturer}' ,'{phone.model}','{phone.price}' ,'{phone.quantity}','{phone.IMEI}' ,'{phone.warranty}') ")
-
+    conn.commit()
 
 def update_phone_quantity(conn, model, quantity):
     cur = conn.cursor()
-    cur.execute(f"UPDATE {conf.PHONE_TABLE} SET quantity = {quantity} WHERE model = {model}")
-
+    cur.execute(f"UPDATE {conf.PHONE_TABLE} SET quantity = {quantity} WHERE model = '{model}' ")
+    conn.commit()
 
 def add_new_sale(conn, sale):
     discount = None
@@ -56,6 +56,10 @@ def add_new_sale(conn, sale):
         discount = 0
     cur.execute(
         f"INSERT INTO {conf.SALE_TABLE} VALUES ('{sale.phone.manufacturer}' ,'{sale.model}',{sale.total_sale} ,'{sale.amount_sold}','{sale.date}',{discount}) ")
+
+    # Update sold phone quantity stock
+    cur.execute(f"UPDATE {conf.PHONE_TABLE} SET quantity = quantity - 1 WHERE model = '{sale.model}'")
+    conn.commit()
 
 
 # Report handling
