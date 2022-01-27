@@ -44,10 +44,12 @@ def add_new_phone(conn, phone):
         f"INSERT INTO {conf.PHONE_TABLE} VALUES ('{phone.manufacturer}' ,'{phone.model}','{phone.price}' ,'{phone.quantity}','{phone.IMEI}' ,'{phone.warranty}') ")
     conn.commit()
 
+
 def update_phone_quantity(conn, model, quantity):
     cur = conn.cursor()
     cur.execute(f"UPDATE {conf.PHONE_TABLE} SET quantity = {quantity} WHERE model = '{model}' ")
     conn.commit()
+
 
 def add_new_sale(conn, sale):
     discount = None
@@ -55,10 +57,9 @@ def add_new_sale(conn, sale):
     if sale.discount_made == 1:
         discount = 0
     cur.execute(
-        f"INSERT INTO {conf.SALE_TABLE} VALUES ('{sale.phone.manufacturer}' ,'{sale.model}',{sale.total_sale} ,'{sale.amount_sold}','{sale.date}',{discount}) ")
-
+        f"INSERT INTO {conf.SALE_TABLE} VALUES ('{sale.manufacturer}' ,'{sale.model}',{sale.total_sale} ,'{sale.amount_sold}','{sale.date}',{discount}) ")
     # Update sold phone quantity stock
-    cur.execute(f"UPDATE {conf.PHONE_TABLE} SET quantity = quantity - 1 WHERE model = '{sale.model}'")
+    cur.execute(f"UPDATE {conf.PHONE_TABLE} SET quantity = quantity - {sale.amount_sold} WHERE model = '{sale.model}'")
     conn.commit()
 
 
@@ -79,9 +80,8 @@ def sales_report_by_date(conn, start_date, end_date):
     print(f"Tottal sales between {start_date} and {end_date} is : {len(rows)}")
 
 
-def get_price_by_model(conn, phone_model):
+def get_price_by_model(conn, phone_model, manu):
     cur = conn.cursor()
-    cur.execute(f"SELECT price FROM {conf.PHONE_TABLE} WHERE model = '{phone_model}'")
-    price = cur.fetchall()
-    price = (str(price[0]).strip("(").strip(")").strip(","))
-    return int(price)
+    cur.execute(f"SELECT price FROM {conf.PHONE_TABLE} WHERE model = phone_model AND manufacturer = manu")
+    price = cur.fetchone()
+    return price[0]
