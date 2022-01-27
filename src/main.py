@@ -7,6 +7,7 @@ from Phone import *
 from Sale import *
 
 cmd_dict = {
+    # keys and commands for cli integration
     0: "Add a new phone",
     1: "Update phone quantity",
     2: "Add new sale",
@@ -17,6 +18,7 @@ cmd_dict = {
 
 
 def cli(connection):
+    """Command line interface - needs a connection string to the sqlite DB"""
     print("------------> Welcome to the phone store CLI <------------")
     for i in cmd_dict:
         print(f'press {i} in order to {cmd_dict[i]}')
@@ -58,6 +60,7 @@ def cmd_management(selection):
                 discount = 1
             acutal_phone_price = db_utils.get_price_by_model(connection, str(sold_model))
             sale = Sale(manufacturer, sold_model, sale_date, amount, acutal_phone_price * discount, discount)
+            db_utils.add_new_sale(connection, sale)
             return
         case 3:
             # phone stock report
