@@ -17,7 +17,7 @@ cmd_dict = {
 }
 
 
-def cli(connection):
+def cli(connection_string):
     """Command line interface - needs a connection string to the sqlite DB"""
     print("------------> Welcome to the phone store CLI <------------")
     for i in cmd_dict:
@@ -25,9 +25,9 @@ def cli(connection):
     selection = input("Enter selection: ")
     while int(selection) not in list(cmd_dict.keys()):
         print("wrong selection please try again")
-        cli(connection)
+        cli(connection_string)
     cmd_management(int(selection))
-    cli(connection)
+    cli(connection_string)
 
 
 def cmd_management(selection):
