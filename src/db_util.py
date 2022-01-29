@@ -45,6 +45,13 @@ def add_new_phone(conn, phone):
     conn.commit()
 
 
+def get_phone_by_model(conn, phone_model):
+    cur = conn.cursor()
+    cur.execute(f"SELECT * FROM {conf.PHONE_TABLE} WHERE model = '{phone_model}'")
+    phone = cur.fethone()
+    return phone[0]
+
+
 def update_phone_quantity(conn, model, quantity):
     cur = conn.cursor()
     cur.execute(f"UPDATE {conf.PHONE_TABLE} SET quantity = {quantity} WHERE model = '{model}' ")
@@ -63,6 +70,13 @@ def add_new_sale(conn, sale):
     conn.commit()
 
 
+def get_sales_by_date(conn, sale_date):
+    cur = conn.cursor()
+    cur.execut(f"SELECT * FROM {conf.SALE_TABLE} WHERE  date_of_purchase = {sale_date}")
+    sales = cur.fetchall()
+    return sales
+
+
 # Report handling
 def get_phone_stock_report(conn):
     cur = conn.cursor()
@@ -77,11 +91,11 @@ def sales_report_by_date(conn, start_date, end_date):
     cur.execute(
         f"SELECT * FROM {conf.SALE_TABLE} WHERE '{end_date}' > date_of_purchase AND '{start_date}' > date_of_purchase")
     rows = cur.fetchall()
-    print(f"Tottal sales between {start_date} and {end_date} is : {len(rows)}")
+    print(f"Total sales between {start_date} and {end_date} is : {len(rows)}")
 
 
 def get_price_by_model(conn, phone_model, manu):
     cur = conn.cursor()
-    cur.execute(f"SELECT price FROM {conf.PHONE_TABLE} WHERE model = phone_model AND manufacturer = manu")
+    cur.execute(f"SELECT price FROM {conf.PHONE_TABLE} WHERE model = '{phone_model}' AND manufacturer = '{manu}'")
     price = cur.fetchone()
     return price[0]

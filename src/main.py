@@ -2,7 +2,7 @@
 import sqlite3
 import sys
 import src.db_util as db_utils
-import src.conf as conf
+# import src.conf as conf
 from Phone import *
 from Sale import *
 
@@ -58,8 +58,8 @@ def cmd_management(selection):
             discount = input("Enter discount made for  (if none made enter 0):")
             if discount == 0.0:
                 discount = 1
-            acutal_phone_price = db_utils.get_price_by_model(connection, str(sold_model))
-            sale = Sale(manufacturer, sold_model, sale_date, amount, acutal_phone_price * discount, discount)
+            actual_phone_price = db_utils.get_price_by_model(connection, str(sold_model), manufacturer)
+            sale = Sale(manufacturer, sold_model, sale_date, amount, actual_phone_price * discount, discount)
             db_utils.add_new_sale(connection, sale)
             return
         case 3:
