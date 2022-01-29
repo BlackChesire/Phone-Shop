@@ -26,3 +26,19 @@ def test_update_phone_quantity():
 
 def test_add_new_sale():
     pass
+
+
+def test_sales_by_date():
+    pass
+
+
+def test_get_phone_stock_report():
+    pass
+
+
+def test_sales_report_by_date():
+    pass
+
+
+def test_get_price_by_model():
+    pass
