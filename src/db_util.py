@@ -59,21 +59,18 @@ def update_phone_quantity(conn, model, quantity):
 
 
 def add_new_sale(conn, sale):
-    discount = None
     cur = conn.cursor()
-    if sale.discount_made == 1:
-        discount = 0
     cur.execute(
-        f"INSERT INTO {conf.SALE_TABLE} VALUES ('{sale.manufacturer}' ,'{sale.model}',{sale.total_sale} ,'{sale.amount_sold}','{sale.date}',{discount}) ")
+        f"INSERT INTO {conf.SALE_TABLE} VALUES ('{sale.manufacturer}' ,'{sale.model}',{sale.total_sale} ,'{sale.amount_sold}','{sale.date}',{sale.discount_made}) ")
     # Update sold phone quantity stock
     cur.execute(f"UPDATE {conf.PHONE_TABLE} SET quantity = quantity - {sale.amount_sold} WHERE model = '{sale.model}'")
     conn.commit()
 
 
-def get_sales_by_date(conn, sale_date):
+def get_sale_by_date(conn, sale_date):
     cur = conn.cursor()
-    cur.execut(f"SELECT * FROM {conf.SALE_TABLE} WHERE  date_of_purchase = {sale_date}")
-    sales = cur.fetchall()
+    cur.execute(f"SELECT * FROM {conf.SALE_TABLE} WHERE  date_of_purchase = '{sale_date}'")
+    sales = cur.fetchone()
     return sales
 
 

@@ -12,7 +12,7 @@ TABLES = {
    model VARCHAR(30),
    price INTEGER,
    quantity INTEGER,
-   IMEI INTEGER,
+   IMEI VARCHAR(15),
    warranty DATE
    );""",
    "sale_table": """
