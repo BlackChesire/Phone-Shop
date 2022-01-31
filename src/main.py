@@ -72,6 +72,7 @@ def cmd_management(selection):
             db_utils.sales_report_by_date(connection, start_date, end_date)
             return
         case 5:  # EXIT
+            connection.close()
             exit()
 
 
@@ -83,7 +84,7 @@ if __name__ == '__main__':
         cli(connection)
     except sqlite3.Error as e:
         print(f"Error {e.args[0]}")
-        sys.exit(1)
     finally:
         if connection:
             connection.close()
+            sys.exit(1)
