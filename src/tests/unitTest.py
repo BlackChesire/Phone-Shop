@@ -1,6 +1,4 @@
-import io
 import os
-import sys
 
 from src.Phone import *
 from src.Sale import *
@@ -8,8 +6,9 @@ import src.db_util as db_utils
 import sqlite3
 import src.conf as conf
 import pytest
-import yaml
+
 """Unit test will check the db_utils functions for interact with DB"""
+
 
 @pytest.fixture
 def db():
