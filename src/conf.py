@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 DB_NAME = "db/store.db"
+TEST_DB = "test.db"
 RAW_DATA = "db/raw_data.yaml"
 PHONE_TABLE = "phone"
 SALE_TABLE = "sale"

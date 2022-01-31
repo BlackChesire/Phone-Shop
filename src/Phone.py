@@ -1,3 +1,4 @@
+
 class Phone:
     def __init__(self, manufacturer, model, price, quantity, IMEI, warranty):
         self.manufacturer = manufacturer

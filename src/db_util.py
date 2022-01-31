@@ -41,14 +41,14 @@ def add_new_phone(conn, phone):
     """ Adds new phone to the phones table"""
     cur = conn.cursor()
     cur.execute(
-        f"INSERT INTO {conf.PHONE_TABLE} VALUES ('{phone.manufacturer}' ,'{phone.model}','{phone.price}' ,'{phone.quantity}','{phone.IMEI}' ,'{phone.warranty}') ")
+        f"INSERT INTO {conf.PHONE_TABLE} VALUES ('{phone.manufacturer}' ,'{phone.model}',{phone.price} ,{phone.quantity},{phone.IMEI} ,'{phone.warranty}') ")
     conn.commit()
 
 
 def get_phone_by_model(conn, phone_model):
     cur = conn.cursor()
     cur.execute(f"SELECT * FROM {conf.PHONE_TABLE} WHERE model = '{phone_model}'")
-    phone = cur.fethone()
+    phone = cur.fetchall()
     return phone[0]
 
 
