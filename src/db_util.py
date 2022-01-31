@@ -86,7 +86,7 @@ def get_phone_stock_report(conn):
 def sales_report_by_date(conn, start_date, end_date):
     cur = conn.cursor()
     cur.execute(
-        f"SELECT * FROM {conf.SALE_TABLE} WHERE '{end_date}' > date_of_purchase AND '{start_date}' > date_of_purchase")
+        f"SELECT * FROM {conf.SALE_TABLE} WHERE '{end_date}' >= date_of_purchase AND '{start_date}' >= date_of_purchase")
     rows = cur.fetchall()
     print(f"Total sales between {start_date} and {end_date} is : {len(rows)}")
 
