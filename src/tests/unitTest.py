@@ -1,5 +1,4 @@
 import os
-
 from src.Phone import *
 from src.Sale import *
 import src.db_util as db_utils
