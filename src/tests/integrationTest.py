@@ -2,7 +2,6 @@ import io
 import os
 import sqlite3
 import sys
-
 import pytest
 from src.shop_cli import *
 
@@ -42,11 +41,12 @@ def test_phone_addition_CLI(db):
     except EOFError:
         return
 
+
 def test_update_quantity_CLI(db):
-    """Testing the CLI to upate phone quantity"""
+    """Testing the CLI to update phone quantity"""
     try:
-        mock_input('\n'.join(["1", "x","3"]))
-        mock_input('\n'.join(["1","10T", "0", "3"]))
+        mock_input('\n'.join(["1", "x", "3"]))
+        mock_input('\n'.join(["1", "10T", "0", "3"]))
         iphone = db_utils.get_phone_by_model(db, "x")
         xiaomi = db_utils.get_phone_by_model(db, "10T")
         assert iphone[0] == "iphone" and iphone[3] == "1"
@@ -54,3 +54,6 @@ def test_update_quantity_CLI(db):
         cli(db)
     except EOFError:
         return
+
+def test_add_new_sale_CLI(db):
+    """Testing the  usage of the CLI for adding new sale"""

@@ -1,11 +1,7 @@
 #!/usr/bin/python
 import sqlite3
 import sys
-import src.db_util as db_utils
 from src.shop_cli import *
-# import src.conf as conf
-from Phone import *
-from Sale import *
 
 if __name__ == '__main__':
     connection = None
